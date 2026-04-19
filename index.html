@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Honest Ballot</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --paper: #fffdf8;
+      --ink: #161616;
+      --muted: #5d5d5d;
+      --rule: #cfc5b1;
+      --accent: #7f1616;
+      --accent-2: #183f6b;
+      --soft: #efe6d5;
+      --warn: #f8e3c8;
+      --box: #faf6ee;
+      --hero: #f6f1e6;
+      --shadow: 0 14px 40px rgba(0,0,0,0.09);
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: linear-gradient(180deg, #f7f3eb 0%, var(--bg) 100%);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(255,253,248,0.92);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .topbar-inner,
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.95rem;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--muted);
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: var(--accent);
+    }
+
+    .hero {
+      padding: 72px 0 50px;
+      background:
+        radial-gradient(circle at top right, rgba(127,22,22,0.06), transparent 30%),
+        radial-gradient(circle at top left, rgba(24,63,107,0.07), transparent 30%),
+        var(--hero);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    h1, h2, h3, h4 { line-height: 1.1; margin: 0; }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      max-width: 12ch;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy {
+      font-size: clamp(1.08rem, 2.1vw, 1.24rem);
+      color: #2a2a2a;
+      max-width: 70ch;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: white;
+      font-size: 0.96rem;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    section.page-section {
+      padding: 56px 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+      align-items: start;
+    }
+
+    .section-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .section-head p,
+    .lede {
+      font-size: 1.05rem;
+      color: #313131;
+      margin: 0;
+      max-width: 70ch;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      font-size: 1.12rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .formula-band {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 0.9fr;
+      gap: 16px;
+    }
+
+    .formula-box {
+      background: #fff;
+      border: 1px solid var(--rule);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .formula-box h3 {
+      font-size: 1.08rem;
+      margin-bottom: 10px;
+    }
+
+    .formula-line {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .formula-line span {
+      color: var(--accent-2);
+    }
+
+    .formula-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .method-card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      padding: 14px;
+    }
+
+    .method-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .method-value {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .method-help {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .compare-box {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .compare-box h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+
+    .compare-tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid var(--rule);
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .feature-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .feature-list li {
+      margin-bottom: 10px;
+    }
+
+    .feature-list strong {
+      color: var(--ink);
+    }
+
+    .mini-ballot {
+      margin-top: 18px;
+      border: 1px solid var(--rule);
+      background: #fff;
+      padding: 14px;
+    }
+
+    .mini-ballot-title {
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .mini-choice {
+      border: 1px solid var(--rule);
+      background: var(--box);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .mini-choice:last-child {
+      margin-bottom: 0;
+    }
+
+    .mini-choice strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .mini-choice span {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .step {
+      background: #fff;
+      border: 1px solid var(--rule);
+      padding: 18px;
+      min-height: 180px;
+    }
+
+    .step-number {
+      font-size: 0.88rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .step h3 {
+      font-size: 1.06rem;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .ballot-shell {
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      box-shadow: 0 16px 46px rgba(0,0,0,0.14);
+      overflow: hidden;
+    }
+
+    .ballot-header {
+      padding: 28px 34px 20px;
+      border-bottom: 3px double var(--ink);
+      background: linear-gradient(180deg, #fffefb, #f8f2e5);
+    }
+
+    .ballot-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .ballot-title {
+      font-size: clamp(1.95rem, 4vw, 2.95rem);
+      margin-bottom: 10px;
+    }
+
+    .ballot-subhead {
+      margin: 0;
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 72ch;
+    }
+
+    .truth-panel {
+      margin-top: 18px;
+      background: var(--warn);
+      border-left: 6px solid var(--accent);
+      padding: 16px 18px;
+    }
+
+    .truth-panel > strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .truth-list strong {
+      display: inline;
+      margin: 0;
+    }
+
+    .truth-list {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .truth-list li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+      margin: 0;
+    }
+
+    .truth-list li::before {
+      content: "•";
+      font-size: 1.25rem;
+      line-height: 1;
+      color: var(--ink);
+      margin-top: 2px;
+    }
+
+    .ballot-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 0;
+    }
+
+    .ballot-left,
+    .ballot-right {
+      padding: 24px 28px 30px;
+    }
+
+    .ballot-left {
+      border-right: 1px solid var(--rule);
+    }
+
+    .minor-title {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+
+    .instruction-box {
+      border: 1px solid var(--rule);
+      background: var(--soft);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 0.98rem;
+    }
+
+    .instruction-box p {
+      margin: 0 0 10px;
+    }
+
+    .instruction-box p:last-child { margin-bottom: 0; }
+
+    .candidate-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .candidate {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 14px;
+      align-items: start;
+      border: 1px solid var(--rule);
+      background: var(--box);
+      padding: 16px;
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    }
+
+    .candidate:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.07);
+      border-color: #9a9079;
+    }
+
+    .candidate input[type="radio"] {
+      width: 26px;
+      height: 26px;
+      margin: 6px auto 0;
+      accent-color: var(--accent-2);
+      cursor: pointer;
+    }
+
+    .candidate label {
+      cursor: pointer;
+      display: block;
+    }
+
+    .slate-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .slate-name {
+      font-size: 1.26rem;
+      font-weight: 700;
+    }
+
+    .party {
+      display: inline-block;
+      font-size: 0.86rem;
+      padding: 2px 8px;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .elector-count {
+      font-size: 0.96rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .pledge-line {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .elector-summary {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .elector-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .elector-list li { margin-bottom: 4px; }
+
+    details {
+      margin-top: 10px;
+      border-top: 1px dashed var(--rule);
+      padding-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-size: 0.92rem;
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+
+    .selection-meaning {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .ballot-right h3 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+      line-height: 1.2;
+    }
+
+    .mechanics,
+    .notice,
+    .plurality,
+    .plain-box {
+      margin-bottom: 16px;
+      background: #fff;
+      border: 1px solid var(--rule);
+      padding: 14px 16px;
+    }
+
+    .mechanics ol,
+    .plain-box ol {
+      margin: 10px 0 0 20px;
+      padding: 0;
+    }
+
+    .mechanics li,
+    .plain-box li { margin-bottom: 10px; }
+
+    .notice {
+      background: #f2f6fb;
+      border-left: 5px solid var(--accent-2);
+    }
+
+    .plurality {
+      border-style: dashed;
+      background: #fffdf9;
+    }
+
+    .caption {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .manifesto {
+      background: linear-gradient(180deg, #fbf8f1, #f3ebdc);
+      border-top: 1px solid rgba(0,0,0,0.08);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .manifesto-block {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .manifesto-block p {
+      margin: 0 0 16px;
+      font-size: 1.02rem;
+      color: #2b2b2b;
+    }
+
+    .manifesto-block p:last-child { margin-bottom: 0; }
+
+    footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .section-head,
+      .ballot-grid,
+      .compare-grid,
+      .formula-band,
+      .method-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ballot-left {
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .card-grid,
+      .process {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner { align-items: start; flex-direction: column; }
+      .card-grid,
+      .process,
+      .compare-grid { grid-template-columns: 1fr; }
+      .container,
+      .topbar-inner { width: min(var(--max), calc(100% - 22px)); }
+      .hero { padding-top: 54px; }
+      .ballot-header,
+      .ballot-left,
+      .ballot-right { padding-left: 18px; padding-right: 18px; }
+      .slate-line { align-items: start; flex-direction: column; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">The Honest Ballot</div>
+      <nav class="nav" aria-label="Section navigation">
+        <a href="#why">Why this exists</a>
+        <a href="#basics">EC basics</a>
+        <a href="#compare">Compare</a>
+        <a href="#how">How it works</a>
+        <a href="#ballot">See the ballot</a>
+        <a href="#meaning">Why it matters</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">A civic design project</div>
+        <h1>The ballot should say what your vote really does.</h1>
+        <p class="hero-copy">
+          In a presidential election, the ballot usually feels like a direct vote for President.
+          But the legal step is more indirect than that. Your vote helps decide which slate of electors your state will appoint.
+          This website makes that plain.
+        </p>
+        <div class="cta-row">
+          <a class="button" href="#ballot">See the Honest Ballot</a>
+          <a class="button secondary" href="#how">See the 4-step process</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <strong>The main idea</strong>
+        A voter should not have to guess what kind of act they are performing.
+        If the system uses electors, the ballot should say so clearly.
+      </aside>
+    </div>
+  </section>
+
+  <section class="page-section" id="why">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Why this exists</div>
+          <h2>The ballot is easy to use. It is not always honest about the system behind it.</h2>
+        </div>
+        <p class="lede">
+          Most voters are shown a ballot that looks more direct than the legal process really is.
+          The Honest Ballot keeps the ballot readable while also showing the missing middle step.
+        </p>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <h3>It puts electors in view</h3>
+          <p>Instead of hiding them in the background, it shows that the voter is choosing among slates of electors tied to each ticket.</p>
+        </article>
+        <article class="card">
+          <h3>It uses plain language</h3>
+          <p>No legal fog. No civics-class softening. Just a direct explanation of what the vote does and does not do.</p>
+        </article>
+        <article class="card">
+          <h3>It shows the rule up front</h3>
+          <p>The slate with the most votes statewide gets all of the state's electors. That rule should not be hidden.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="basics">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">EC basics</div>
+          <h2>The key facts a voter should not have to hunt down.</h2>
+        </div>
+        <p class="lede">
+          Before a voter can judge the system, they need a few basic facts in plain language: how many electors there are, how a state gets them, and how many it takes to win.
+        </p>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <h3>There are 538 electors total</h3>
+          <p>The country has 538 electoral votes in all. A candidate needs 270 to win the presidency.</p>
+        </article>
+        <article class="card">
+          <h3>Each state gets electors from Congress</h3>
+          <p>A state's elector count equals its number of House seats plus 2 more for its Senate seats.</p>
+        </article>
+        <article class="card">
+          <h3>Arizona currently has 11</h3>
+          <p>Arizona currently has 11 electors because it has 9 House seats and 2 Senate seats.</p>
+        </article>
+        <article class="card">
+          <h3>Washington, DC gets 3</h3>
+          <p>DC is not a state, but it gets 3 electors under the Constitution.</p>
+        </article>
+        <article class="card">
+          <h3>Most states use winner-take-all</h3>
+          <p>In most states, the statewide winner gets all of that state's electors.</p>
+        </article>
+        <article class="card">
+          <h3>Only two states split electors</h3>
+          <p>Maine and Nebraska can split electoral votes instead of giving all of them to one ticket.</p>
+        </article>
+      </div>
+
+      <div class="formula-band">
+        <article class="formula-box">
+          <h3>Why Arizona has 11 electors</h3>
+          <div class="formula-line">9 House seats <span>+</span> 2 Senate seats <span>=</span> 11 electors</div>
+          <div class="formula-note">That is the number of electoral votes Arizona gets in a presidential election.</div>
+        </article>
+        <article class="formula-box">
+          <h3>How many electors exist</h3>
+          <div class="formula-line">50 states <span>+</span> DC <span>=</span> 538 electors</div>
+          <div class="formula-note">The whole Electoral College adds up to 538 electoral votes.</div>
+        </article>
+        <article class="formula-box">
+          <h3>How many it takes to win</h3>
+          <div class="formula-line">538 total <span>÷</span> 2, rounded up <span>=</span> 270</div>
+          <div class="formula-note">A presidential ticket needs 270 electoral votes to win.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="compare">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Compare the two ballots</div>
+          <h2>One ballot feels direct. The other shows the missing step.</h2>
+        </div>
+        <p class="lede">
+          This side-by-side is useful because the difference is not just wording. It is visual emphasis. A standard ballot pushes the elector step into the background. The Honest Ballot puts it where the voter can actually see it.
+        </p>
+      </div>
+      <div class="compare-grid">
+        <article class="compare-box">
+          <div class="compare-tag">Standard ballot</div>
+          <h3>What the voter usually sees</h3>
+          <ul class="feature-list">
+            <li><strong>Candidate names come first.</strong> The ballot feels like a direct choice of President.</li>
+            <li><strong>Electors are mostly invisible.</strong> The middle step is hidden or easy to miss.</li>
+            <li><strong>The rule is often unstated.</strong> The voter may not be told that the statewide winner gets all electors.</li>
+            <li><strong>The vote feels more direct than it is.</strong> The interface is simple, but it leaves out key facts.</li>
+          </ul>
+          <div class="mini-ballot" aria-hidden="true">
+            <div class="mini-ballot-title">Typical look</div>
+            <div class="mini-choice">
+              <strong>Grace Whitaker / Omar Flores</strong>
+              <span>Democratic Party</span>
+            </div>
+            <div class="mini-choice">
+              <strong>Noah Bennett / Claire Okafor</strong>
+              <span>Republic Party</span>
+            </div>
+            <div class="mini-choice">
+              <strong>Samuel Reed / Ivy Chen</strong>
+              <span>Independent</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="compare-box">
+          <div class="compare-tag">Honest Ballot</div>
+          <h3>What the voter should be able to see</h3>
+          <ul class="feature-list">
+            <li><strong>The slate comes first.</strong> The ballot makes clear that the voter is choosing electors.</li>
+            <li><strong>The electors are visible.</strong> The people who may actually cast the official votes are shown.</li>
+            <li><strong>The rule is stated clearly.</strong> The voter is told that the statewide winner gets all electors.</li>
+            <li><strong>The candidate names still appear.</strong> But they are shown as the ticket the slate is pledged to support, not as the whole legal story.</li>
+          </ul>
+          <div class="mini-ballot" aria-hidden="true">
+            <div class="mini-ballot-title">Honest look</div>
+            <div class="mini-choice">
+              <strong>Slate D — 11 Arizona electors</strong>
+              <span>Pledged to Grace Whitaker / Omar Flores</span>
+            </div>
+            <div class="mini-choice">
+              <strong>Slate C — 11 Arizona electors</strong>
+              <span>Pledged to Noah Bennett / Claire Okafor</span>
+            </div>
+            <div class="mini-choice">
+              <strong>Slate E — 11 Arizona electors</strong>
+              <span>Pledged to Samuel Reed / Ivy Chen</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="how">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">How it works</div>
+          <h2>This is the process your vote enters.</h2>
+        </div>
+        <p class="lede">
+          The steps are simple. What is unusual is that the normal ballot does not spell them out.
+        </p>
+      </div>
+      <div class="process">
+        <article class="step">
+          <div class="step-number">Step 1</div>
+          <h3>Each ticket has a slate of electors</h3>
+          <p>Before Election Day, each presidential ticket is tied to a group of electors in the state.</p>
+        </article>
+        <article class="step">
+          <div class="step-number">Step 2</div>
+          <h3>You pick one slate</h3>
+          <p>You see candidate names on the ballot, but the legal choice attached to them is a slate of electors.</p>
+        </article>
+        <article class="step">
+          <div class="step-number">Step 3</div>
+          <h3>The statewide winner gets all electors</h3>
+          <p>In a winner-take-all state, the slate with the most votes statewide gets the whole set of electors.</p>
+        </article>
+        <article class="step">
+          <div class="step-number">Step 4</div>
+          <h3>The electors cast the official votes</h3>
+          <p>Those electors later cast the state's formal electoral votes for President and Vice President.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="ballot">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Prototype</div>
+          <h2>An Honest Ballot for President and Vice President</h2>
+        </div>
+        <p class="lede">
+          This design keeps the ballot usable, but changes the visual order of importance.
+          The slate comes first. The electors come next. The candidate names are there, but they do not pretend to be the whole story.
+        </p>
+      </div>
+
+      <div class="ballot-shell">
+        <header class="ballot-header">
+          <div class="ballot-kicker">Official General Election Ballot — Demonstration Format</div>
+          <h3 class="ballot-title">Elector Selection Contest</h3>
+          <p class="ballot-subhead">
+            You are choosing which slate of electors this state will appoint.
+            The slate with the most votes statewide gets all of this state's electoral votes.
+          </p>
+          <section class="truth-panel" aria-label="What your vote does">
+            <strong>What your vote does</strong>
+            <ul class="truth-list">
+              <li><span><strong>This vote does not directly elect a President.</strong></span></li>
+              <li><span>This vote helps choose which <strong>slate of electors</strong> your state will appoint.</span></li>
+              <li><span>The electors on the winning slate later cast the state's official votes for President and Vice President.</span></li>
+            </ul>
+          </section>
+        </header>
+
+        <section class="ballot-grid">
+          <section class="ballot-left" aria-labelledby="choices-title">
+            <p class="minor-title" id="choices-title">Select one slate</p>
+
+            <div class="instruction-box">
+              <p><strong>How to vote:</strong> Mark <strong>one</strong> slate.</p>
+              <p>The slate with the most votes statewide wins all of this state's electors.</p>
+            </div>
+
+            <form class="candidate-list">
+              <div class="candidate">
+                <input type="radio" id="c1" name="president" />
+                <label for="c1">
+                  <div class="slate-line">
+                    <div class="slate-name">Slate A</div>
+                    <div class="party">Civic Union Party</div>
+                  </div>
+                  <div class="elector-count">11 Arizona electors</div>
+                  <div class="pledge-line">Pledged to Elena Morales for President and David Kim for Vice President</div>
+                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                  <details>
+                    <summary>See the electors on this slate</summary>
+                    <ul class="elector-list">
+                      <li>Carlos Mendoza</li>
+                      <li>Patricia Washington</li>
+                      <li>Robert Kim</li>
+                      <li>Linda Hernandez</li>
+                      <li>Michael O'Brien</li>
+                      <li>Jennifer Yazzie</li>
+                      <li>Thomas Wright</li>
+                      <li>Maria Gonzalez</li>
+                      <li>David Chang</li>
+                      <li>Susan Miller</li>
+                      <li>Anthony Romero</li>
+                    </ul>
+                  </details>
+                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                </label>
+              </div>
+
+              <div class="candidate">
+                <input type="radio" id="c2" name="president" />
+                <label for="c2">
+                  <div class="slate-line">
+                    <div class="slate-name">Slate B</div>
+                    <div class="party">National Reform Party</div>
+                  </div>
+                  <div class="elector-count">11 Arizona electors</div>
+                  <div class="pledge-line">Pledged to Marcus Hale for President and Priya Sethi for Vice President</div>
+                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                  <details>
+                    <summary>See the electors on this slate</summary>
+                    <ul class="elector-list">
+                      <li>Richard Thompson</li>
+                      <li>Barbara Fitzgerald</li>
+                      <li>Joseph Walsh</li>
+                      <li>Nancy Peterson</li>
+                      <li>William Hayes</li>
+                      <li>Dorothy Russell</li>
+                      <li>Charles Foster</li>
+                      <li>Margaret Cole</li>
+                      <li>Kenneth Wells</li>
+                      <li>Helen Reed</li>
+                      <li>Steven Porter</li>
+                    </ul>
+                  </details>
+                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                </label>
+              </div>
+
+              <div class="candidate">
+                <input type="radio" id="c3" name="president" />
+                <label for="c3">
+                  <div class="slate-line">
+                    <div class="slate-name">Slate C</div>
+                    <div class="party">Republic Party</div>
+                  </div>
+                  <div class="elector-count">11 Arizona electors</div>
+                  <div class="pledge-line">Pledged to Noah Bennett for President and Claire Okafor for Vice President</div>
+                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                  <details>
+                    <summary>See the electors on this slate</summary>
+                    <ul class="elector-list">
+                      <li>Gregory Hanson</li>
+                      <li>Janet Klein</li>
+                      <li>Ryan Mitchell</li>
+                      <li>Emma Larsson</li>
+                      <li>Aaron Patel</li>
+                      <li>Sophia Nguyen</li>
+                      <li>Bradley Cooper</li>
+                      <li>Diana Schaefer</li>
+                      <li>Marcus Reyes</li>
+                      <li>Isabella Flores</li>
+                      <li>Nathan Brooks</li>
+                    </ul>
+                  </details>
+                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                </label>
+              </div>
+
+              <div class="candidate">
+                <input type="radio" id="c4" name="president" />
+                <label for="c4">
+                  <div class="slate-line">
+                    <div class="slate-name">Slate D</div>
+                    <div class="party">Democratic Party</div>
+                  </div>
+                  <div class="elector-count">11 Arizona electors</div>
+                  <div class="pledge-line">Pledged to Grace Whitaker for President and Omar Flores for Vice President</div>
+                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                  <details>
+                    <summary>See the electors on this slate</summary>
+                    <ul class="elector-list">
+                      <li>Rosa Ortiz</li>
+                      <li>Daniel Greenberg</li>
+                      <li>Amara Johnson</li>
+                      <li>Jacob Silverman</li>
+                      <li>Yasmin Ahmed</li>
+                      <li>Christopher Lee</li>
+                      <li>Luna Martinez</li>
+                      <li>Benjamin Cohen</li>
+                      <li>Priya Sharma</li>
+                      <li>Jordan Williams</li>
+                      <li>Zoe Chen</li>
+                    </ul>
+                  </details>
+                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                </label>
+              </div>
+
+              <div class="candidate">
+                <input type="radio" id="c5" name="president" />
+                <label for="c5">
+                  <div class="slate-line">
+                    <div class="slate-name">Slate E</div>
+                    <div class="party">Independent</div>
+                  </div>
+                  <div class="elector-count">11 Arizona electors</div>
+                  <div class="pledge-line">Pledged to Samuel Reed for President and Ivy Chen for Vice President</div>
+                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                  <details>
+                    <summary>See the electors on this slate</summary>
+                    <ul class="elector-list">
+                      <li>Harold Jackson</li>
+                      <li>Virginia Baker</li>
+                      <li>Edward Carter</li>
+                      <li>Ruth Davidson</li>
+                      <li>Frank Morrison</li>
+                      <li>Dorothy Anderson</li>
+                      <li>Paul Sanders</li>
+                      <li>Evelyn Phillips</li>
+                      <li>George Richardson</li>
+                      <li>Beatrice Harris</li>
+                      <li>Vincent Murphy</li>
+                    </ul>
+                  </details>
+                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                </label>
+              </div>
+            </form>
+          </section>
+
+          <aside class="ballot-right" aria-labelledby="explanation-title">
+            <p class="minor-title" id="explanation-title">Plain-language guide</p>
+
+            <div class="method-grid">
+              <div class="method-card">
+                <div class="method-label">Ballot style</div>
+                <div class="method-value">Pick one slate</div>
+                <div class="method-help">You get one choice on this ballot.</div>
+              </div>
+              <div class="method-card">
+                <div class="method-label">Counting rule</div>
+                <div class="method-value">Plurality</div>
+                <div class="method-help">Whoever gets more votes than any other slate wins.</div>
+              </div>
+              <div class="method-card">
+                <div class="method-label">Winner rule</div>
+                <div class="method-value">Most votes wins</div>
+                <div class="method-help">A slate does not need over 50%. It only needs to finish first.</div>
+              </div>
+              <div class="method-card">
+                <div class="method-label">Winner award</div>
+                <div class="method-value">All state electors</div>
+                <div class="method-help">The statewide winner gets all 11 Arizona electors.</div>
+              </div>
+            </div>
+
+            <div class="mechanics">
+              <h3>What happens after you vote</h3>
+              <ol>
+                <li>You mark one slate.</li>
+                <li>All votes in the state are counted.</li>
+                <li>The slate with the most votes wins all 11 Arizona elector spots.</li>
+                <li>Those 11 electors later cast Arizona's official votes for President and Vice President.</li>
+              </ol>
+            </div>
+
+            <div class="plurality">
+              <strong>Important rule:</strong><br>
+              This ballot uses <strong>plurality</strong> voting. That means a slate can win all 11 electors without winning more than half of the vote. It only needs more votes than any other slate.
+            </div>
+
+            <div class="plain-box">
+              <h3>What votes for losing slates do not do</h3>
+              <ol>
+                <li>They do not help appoint part of Arizona's elector slate.</li>
+                <li>They do not add electors to the national total for that ticket.</li>
+                <li>They are counted and reported, but they do not change who Arizona appoints unless that slate wins statewide.</li>
+              </ol>
+            </div>
+
+            <div class="notice">
+              <strong>Why this ballot looks different</strong><br>
+              Most ballots make the candidate feel like the direct object of the vote.
+              This design puts the slate and the electors closer to the mark because that is the legal step the voter is actually taking.
+            </div>
+          </aside>
+        </section>
+      </div>
+
+      <p class="caption">
+        This is a design prototype, not an official ballot. It is meant to show how a presidential ballot could be more direct about what the voter is legally doing.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section manifesto" id="meaning">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Why it matters</div>
+          <h2>A democratic system should not hide its own steps from the voter.</h2>
+        </div>
+        <p class="lede">
+          This project is not about making the ballot harder to read. It is about making the system easier to understand.
+        </p>
+      </div>
+
+      <div class="manifesto-block">
+        <p>
+          A ballot should not make voters feel they are doing one thing when the legal system is actually doing another.
+          If electors are part of the process, the ballot should say that plainly.
+        </p>
+        <p>
+          Candidate names still matter. They help people find the choice they want.
+          But they should not crowd out the fact that the legal choice on the ballot is a slate of electors.
+        </p>
+        <p>
+          Good civic design does not just help a person mark a box.
+          It helps them understand what their mark means.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      The Honest Ballot — a prototype for making hidden election mechanics visible.
+    </div>
+  </footer>
+</body>
+</html>
