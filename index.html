@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Honest Ballot</title>
+  <meta name="description" content="A civic design project showing what your presidential ballot actually does — and how the Electoral College changes the meaning of your vote." />
+  <meta name="theme-color" content="#fffdf8" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#181d26" media="(prefers-color-scheme: dark)" />
+  <meta property="og:title" content="The Honest Ballot" />
+  <meta property="og:description" content="What your presidential ballot actually does." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%97%B3%EF%B8%8F%3C%2Ftext%3E%3C%2Fsvg%3E" />
   <script>
     (() => {
       const storageKey = "honestBallotTheme";
@@ -27,6 +34,7 @@
       --hero: #f6f1e6;
       --shadow: 0 14px 40px rgba(0,0,0,0.09);
       --max: 1180px;
+      --header-height: 80px;
     }
 
     :root[data-theme="dark"] {
@@ -45,7 +53,19 @@
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--header-height);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
 
     body {
       margin: 0;
@@ -56,6 +76,24 @@
     }
 
     a { color: inherit; }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 8px;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 10px 16px;
+      z-index: 100;
+      text-decoration: none;
+      border-radius: 4px;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .skip-link:focus {
+      top: 8px;
+      outline: 2px solid var(--accent-2);
+      outline-offset: 2px;
+    }
 
     body,
     .topbar,
@@ -89,9 +127,18 @@
       position: sticky;
       top: 0;
       z-index: 20;
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       background: rgba(255,253,248,0.92);
       border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+      .topbar {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        background: var(--paper);
+      }
     }
 
     .topbar-inner,
@@ -690,7 +737,7 @@
       color: var(--muted);
     }
 
-    .ballot-right h3 {
+    .ballot-right h4 {
       margin: 0 0 12px;
       font-size: 1.2rem;
       line-height: 1.2;
@@ -788,7 +835,7 @@
 
     :root[data-theme="dark"] .party {
       background: #eef1f6;
-      color: #7f8793;
+      color: #4a5160;
       border-color: #d5dbe5;
     }
 
@@ -857,6 +904,7 @@
     }
 
     @media (max-width: 640px) {
+      :root { --header-height: 140px; }
       .topbar-inner { align-items: start; flex-direction: column; }
       .topbar-controls { width: 100%; justify-content: space-between; }
       .theme-toggle { padding: 9px 12px; }
@@ -874,6 +922,8 @@
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">The Honest Ballot</div>
@@ -891,505 +941,507 @@
     </div>
   </header>
 
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="eyebrow">A civic design project</div>
-        <h1>The ballot should say what your vote really does.</h1>
-        <p class="hero-copy">
-          In a presidential election, the ballot usually feels like a direct vote for President.
-          But the legal step is more indirect than that. Your vote helps decide which slate of electors your state will appoint.
-          This website makes that plain.
-        </p>
-        <div class="cta-row">
-          <a class="button" href="#ballot">See the Honest Ballot</a>
-          <a class="button secondary" href="#how">See the 4-step process</a>
-        </div>
-      </div>
-      <aside class="hero-card">
-        <strong>The main idea</strong>
-        A voter should not have to guess what kind of act they are performing.
-        If the system uses electors, the ballot should say so clearly.
-      </aside>
-    </div>
-  </section>
-
-  <section class="page-section" id="why">
-    <div class="container">
-      <div class="section-head">
+  <main id="main-content">
+    <section class="hero">
+      <div class="container hero-grid">
         <div>
-          <div class="section-kicker">Why this exists</div>
-          <h2>The ballot is easy to use. It is not always honest about the system behind it.</h2>
-        </div>
-        <p class="lede">
-          Most voters are shown a ballot that looks more direct than the legal process really is.
-          The Honest Ballot keeps the ballot readable while also showing the missing middle step.
-        </p>
-      </div>
-      <div class="card-grid">
-        <article class="card">
-          <h3>It puts electors in view</h3>
-          <p>Instead of hiding them in the background, it shows that the voter is choosing among slates of electors tied to each ticket.</p>
-        </article>
-        <article class="card">
-          <h3>It uses plain language</h3>
-          <p>No legal fog. No civics-class softening. Just a direct explanation of what the vote does and does not do.</p>
-        </article>
-        <article class="card">
-          <h3>It shows the rule up front</h3>
-          <p>The slate with the most votes statewide gets all of the state's electors. That rule should not be hidden.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="page-section" id="basics">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">EC basics</div>
-          <h2>The key facts a voter should not have to hunt down.</h2>
-        </div>
-        <p class="lede">
-          Before a voter can judge the system, they need a few basic facts in plain language: how many electors there are, how a state gets them, and how many it takes to win.
-        </p>
-      </div>
-      <div class="card-grid">
-        <article class="card">
-          <h3>There are 538 electors total</h3>
-          <p>The country has 538 electoral votes in all. A candidate needs 270 to win the presidency.</p>
-        </article>
-        <article class="card">
-          <h3>Each state gets electors from Congress</h3>
-          <p>A state's elector count equals its number of House seats plus 2 more for its Senate seats.</p>
-        </article>
-        <article class="card">
-          <h3>Arizona currently has 11</h3>
-          <p>Arizona currently has 11 electors because it has 9 House seats and 2 Senate seats.</p>
-        </article>
-        <article class="card">
-          <h3>Washington, DC gets 3</h3>
-          <p>DC is not a state, but it gets 3 electors under the Constitution.</p>
-        </article>
-        <article class="card">
-          <h3>Most states use winner-take-all</h3>
-          <p>In most states, the statewide winner gets all of that state's electors.</p>
-        </article>
-        <article class="card">
-          <h3>Only two states split electors</h3>
-          <p>Maine and Nebraska can split electoral votes instead of giving all of them to one ticket.</p>
-        </article>
-      </div>
-
-      <div class="formula-band">
-        <article class="formula-box">
-          <h3>Why Arizona has 11 electors</h3>
-          <div class="formula-line">9 House seats <span>+</span> 2 Senate seats <span>=</span> 11 electors</div>
-          <div class="formula-note">That is the number of electoral votes Arizona gets in a presidential election.</div>
-        </article>
-        <article class="formula-box">
-          <h3>How many electors exist</h3>
-          <div class="formula-line">50 states <span>+</span> DC <span>=</span> 538 electors</div>
-          <div class="formula-note">The whole Electoral College adds up to 538 electoral votes.</div>
-        </article>
-        <article class="formula-box">
-          <h3>How many it takes to win</h3>
-          <div class="formula-line">538 total <span>÷</span> 2, rounded up <span>=</span> 270</div>
-          <div class="formula-note">A presidential ticket needs 270 electoral votes to win.</div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="page-section" id="compare">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">Compare the two ballots</div>
-          <h2>One ballot feels direct. The other shows the missing step.</h2>
-        </div>
-        <p class="lede">
-          This side-by-side is useful because the difference is not just wording. It is visual emphasis. A standard ballot pushes the elector step into the background. The Honest Ballot puts it where the voter can actually see it.
-        </p>
-      </div>
-      <div class="compare-grid">
-        <article class="compare-box">
-          <div class="compare-tag">Standard ballot</div>
-          <h3>What the voter usually sees</h3>
-          <ul class="feature-list">
-            <li><strong>Candidate names come first.</strong> The ballot feels like a direct choice of President.</li>
-            <li><strong>Electors are mostly invisible.</strong> The middle step is hidden or easy to miss.</li>
-            <li><strong>The rule is often unstated.</strong> The voter may not be told that the statewide winner gets all electors.</li>
-            <li><strong>The vote feels more direct than it is.</strong> The interface is simple, but it leaves out key facts.</li>
-          </ul>
-          <div class="mini-ballot" aria-hidden="true">
-            <div class="mini-ballot-title">Typical look</div>
-            <div class="mini-choice">
-              <strong>Grace Whitaker / Omar Flores</strong>
-              <span>Democratic Party</span>
-            </div>
-            <div class="mini-choice">
-              <strong>Noah Bennett / Claire Okafor</strong>
-              <span>Republic Party</span>
-            </div>
-            <div class="mini-choice">
-              <strong>Samuel Reed / Ivy Chen</strong>
-              <span>Independent</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="compare-box">
-          <div class="compare-tag">Honest Ballot</div>
-          <h3>What the voter should be able to see</h3>
-          <ul class="feature-list">
-            <li><strong>The slate comes first.</strong> The ballot makes clear that the voter is choosing electors.</li>
-            <li><strong>The electors are visible.</strong> The people who may actually cast the official votes are shown.</li>
-            <li><strong>The rule is stated clearly.</strong> The voter is told that the statewide winner gets all electors.</li>
-            <li><strong>The candidate names still appear.</strong> But they are shown as the ticket the slate is pledged to support, not as the whole legal story.</li>
-          </ul>
-          <div class="mini-ballot" aria-hidden="true">
-            <div class="mini-ballot-title">Honest look</div>
-            <div class="mini-choice">
-              <strong>Slate D — 11 Arizona electors</strong>
-              <span>Pledged to Grace Whitaker / Omar Flores</span>
-            </div>
-            <div class="mini-choice">
-              <strong>Slate C — 11 Arizona electors</strong>
-              <span>Pledged to Noah Bennett / Claire Okafor</span>
-            </div>
-            <div class="mini-choice">
-              <strong>Slate E — 11 Arizona electors</strong>
-              <span>Pledged to Samuel Reed / Ivy Chen</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="page-section" id="how">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">How it works</div>
-          <h2>This is the process your vote enters.</h2>
-        </div>
-        <p class="lede">
-          The steps are simple. What is unusual is that the normal ballot does not spell them out.
-        </p>
-      </div>
-      <div class="process">
-        <article class="step">
-          <div class="step-number">Step 1</div>
-          <h3>Each ticket has a slate of electors</h3>
-          <p>Before Election Day, each presidential ticket is tied to a group of electors in the state.</p>
-        </article>
-        <article class="step">
-          <div class="step-number">Step 2</div>
-          <h3>You pick one slate</h3>
-          <p>You see candidate names on the ballot, but the legal choice attached to them is a slate of electors.</p>
-        </article>
-        <article class="step">
-          <div class="step-number">Step 3</div>
-          <h3>The statewide winner gets all electors</h3>
-          <p>In a winner-take-all state, the slate with the most votes statewide gets the whole set of electors.</p>
-        </article>
-        <article class="step">
-          <div class="step-number">Step 4</div>
-          <h3>The electors cast the official votes</h3>
-          <p>Those electors later cast the state's formal electoral votes for President and Vice President.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="page-section" id="ballot">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">Prototype</div>
-          <h2>An Honest Ballot for President and Vice President</h2>
-        </div>
-        <p class="lede">
-          This design keeps the ballot usable, but changes the visual order of importance.
-          The slate comes first. The electors come next. The candidate names are there, but they do not pretend to be the whole story.
-        </p>
-      </div>
-
-      <div class="ballot-shell">
-        <header class="ballot-header">
-          <div class="ballot-kicker">Official General Election Ballot — Demonstration Format</div>
-          <h3 class="ballot-title">Elector Selection Contest</h3>
-          <p class="ballot-subhead">
-            You are choosing which slate of electors this state will appoint.
-            The slate with the most votes statewide gets all of this state's electoral votes.
+          <div class="eyebrow">A civic design project</div>
+          <h1>The ballot should say what your vote really does.</h1>
+          <p class="hero-copy">
+            In a presidential election, the ballot usually feels like a direct vote for President.
+            But the legal step is more indirect than that. Your vote helps decide which slate of electors your state will appoint.
+            This website makes that plain.
           </p>
-          <section class="truth-panel" aria-label="What your vote does">
-            <strong>What your vote does</strong>
-            <ul class="truth-list">
-              <li><span><strong>This vote does not directly elect a President.</strong></span></li>
-              <li><span>This vote helps choose which <strong>slate of electors</strong> your state will appoint.</span></li>
-              <li><span>The electors on the winning slate later cast the state's official votes for President and Vice President.</span></li>
-            </ul>
-          </section>
-        </header>
-
-        <section class="ballot-grid">
-          <section class="ballot-left" aria-labelledby="choices-title">
-            <p class="minor-title" id="choices-title">Select one slate</p>
-
-            <div class="instruction-box">
-              <p><strong>How to vote:</strong> Mark <strong>one</strong> slate.</p>
-              <p>The slate with the most votes statewide wins all of this state's electors.</p>
-            </div>
-
-            <form class="candidate-list">
-              <div class="candidate">
-                <input type="radio" id="c1" name="president" />
-                <label for="c1">
-                  <div class="slate-line">
-                    <div class="slate-name">Slate A</div>
-                    <div class="party">Civic Union Party</div>
-                  </div>
-                  <div class="elector-count">11 Arizona electors</div>
-                  <div class="pledge-line">Pledged to Elena Morales for President and David Kim for Vice President</div>
-                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
-                  <details>
-                    <summary>See the electors on this slate</summary>
-                    <ul class="elector-list">
-                      <li>Carlos Mendoza</li>
-                      <li>Patricia Washington</li>
-                      <li>Robert Kim</li>
-                      <li>Linda Hernandez</li>
-                      <li>Michael O'Brien</li>
-                      <li>Jennifer Yazzie</li>
-                      <li>Thomas Wright</li>
-                      <li>Maria Gonzalez</li>
-                      <li>David Chang</li>
-                      <li>Susan Miller</li>
-                      <li>Anthony Romero</li>
-                    </ul>
-                  </details>
-                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
-                </label>
-              </div>
-
-              <div class="candidate">
-                <input type="radio" id="c2" name="president" />
-                <label for="c2">
-                  <div class="slate-line">
-                    <div class="slate-name">Slate B</div>
-                    <div class="party">National Reform Party</div>
-                  </div>
-                  <div class="elector-count">11 Arizona electors</div>
-                  <div class="pledge-line">Pledged to Marcus Hale for President and Priya Sethi for Vice President</div>
-                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
-                  <details>
-                    <summary>See the electors on this slate</summary>
-                    <ul class="elector-list">
-                      <li>Richard Thompson</li>
-                      <li>Barbara Fitzgerald</li>
-                      <li>Joseph Walsh</li>
-                      <li>Nancy Peterson</li>
-                      <li>William Hayes</li>
-                      <li>Dorothy Russell</li>
-                      <li>Charles Foster</li>
-                      <li>Margaret Cole</li>
-                      <li>Kenneth Wells</li>
-                      <li>Helen Reed</li>
-                      <li>Steven Porter</li>
-                    </ul>
-                  </details>
-                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
-                </label>
-              </div>
-
-              <div class="candidate">
-                <input type="radio" id="c3" name="president" />
-                <label for="c3">
-                  <div class="slate-line">
-                    <div class="slate-name">Slate C</div>
-                    <div class="party">Republican Party</div>
-                  </div>
-                  <div class="elector-count">11 Arizona electors</div>
-                  <div class="pledge-line">Pledged to Noah Bennett for President and Claire Okafor for Vice President</div>
-                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
-                  <details>
-                    <summary>See the electors on this slate</summary>
-                    <ul class="elector-list">
-                      <li>Gregory Hanson</li>
-                      <li>Janet Klein</li>
-                      <li>Ryan Mitchell</li>
-                      <li>Emma Larsson</li>
-                      <li>Aaron Patel</li>
-                      <li>Sophia Nguyen</li>
-                      <li>Bradley Cooper</li>
-                      <li>Diana Schaefer</li>
-                      <li>Marcus Reyes</li>
-                      <li>Isabella Flores</li>
-                      <li>Nathan Brooks</li>
-                    </ul>
-                  </details>
-                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
-                </label>
-              </div>
-
-              <div class="candidate">
-                <input type="radio" id="c4" name="president" />
-                <label for="c4">
-                  <div class="slate-line">
-                    <div class="slate-name">Slate D</div>
-                    <div class="party">Democratic Party</div>
-                  </div>
-                  <div class="elector-count">11 Arizona electors</div>
-                  <div class="pledge-line">Pledged to Grace Whitaker for President and Omar Flores for Vice President</div>
-                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
-                  <details>
-                    <summary>See the electors on this slate</summary>
-                    <ul class="elector-list">
-                      <li>Rosa Ortiz</li>
-                      <li>Daniel Greenberg</li>
-                      <li>Amara Johnson</li>
-                      <li>Jacob Silverman</li>
-                      <li>Yasmin Ahmed</li>
-                      <li>Christopher Lee</li>
-                      <li>Luna Martinez</li>
-                      <li>Benjamin Cohen</li>
-                      <li>Priya Sharma</li>
-                      <li>Jordan Williams</li>
-                      <li>Zoe Chen</li>
-                    </ul>
-                  </details>
-                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
-                </label>
-              </div>
-
-              <div class="candidate">
-                <input type="radio" id="c5" name="president" />
-                <label for="c5">
-                  <div class="slate-line">
-                    <div class="slate-name">Slate E</div>
-                    <div class="party">Independent</div>
-                  </div>
-                  <div class="elector-count">11 Arizona electors</div>
-                  <div class="pledge-line">Pledged to Samuel Reed for President and Ivy Chen for Vice President</div>
-                  <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
-                  <details>
-                    <summary>See the electors on this slate</summary>
-                    <ul class="elector-list">
-                      <li>Harold Jackson</li>
-                      <li>Virginia Baker</li>
-                      <li>Edward Carter</li>
-                      <li>Ruth Davidson</li>
-                      <li>Frank Morrison</li>
-                      <li>Dorothy Anderson</li>
-                      <li>Paul Sanders</li>
-                      <li>Evelyn Phillips</li>
-                      <li>George Richardson</li>
-                      <li>Beatrice Harris</li>
-                      <li>Vincent Murphy</li>
-                    </ul>
-                  </details>
-                  <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
-                </label>
-              </div>
-            </form>
-          </section>
-
-          <aside class="ballot-right" aria-labelledby="explanation-title">
-            <p class="minor-title" id="explanation-title">Plain-language guide</p>
-
-            <div class="method-grid">
-              <div class="method-card">
-                <div class="method-label">Ballot style</div>
-                <div class="method-value">Pick one slate</div>
-                <div class="method-help">You get one choice on this ballot.</div>
-              </div>
-              <div class="method-card">
-                <div class="method-label">Counting rule</div>
-                <div class="method-value">Plurality</div>
-                <div class="method-help">Whoever gets more votes than any other slate wins.</div>
-              </div>
-              <div class="method-card">
-                <div class="method-label">Winner rule</div>
-                <div class="method-value">Most votes wins</div>
-                <div class="method-help">A slate does not need over 50%. It only needs to finish first.</div>
-              </div>
-              <div class="method-card">
-                <div class="method-label">Winner award</div>
-                <div class="method-value">All state electors</div>
-                <div class="method-help">The statewide winner gets all 11 Arizona electors.</div>
-              </div>
-            </div>
-
-            <div class="mechanics">
-              <h3>What happens after you vote</h3>
-              <ol>
-                <li>You mark one slate.</li>
-                <li>All votes in the state are counted.</li>
-                <li>The slate with the most votes wins all 11 Arizona elector spots.</li>
-                <li>Those 11 electors later cast Arizona's official votes for President and Vice President.</li>
-              </ol>
-            </div>
-
-            <div class="plurality">
-              <strong>Important rule:</strong><br>
-              This ballot uses <strong>plurality</strong> voting. That means a slate can win all 11 electors without winning more than half of the vote. It only needs more votes than any other slate.
-            </div>
-
-            <div class="plain-box">
-              <h3>What votes for losing slates do not do</h3>
-              <ol>
-                <li>They do not help appoint part of Arizona's elector slate.</li>
-                <li>They do not add electors to the national total for that ticket.</li>
-                <li>They are counted and reported, but they do not change who Arizona appoints unless that slate wins statewide.</li>
-              </ol>
-            </div>
-
-            <div class="notice">
-              <strong>Why this ballot looks different</strong><br>
-              Most ballots make the candidate feel like the direct object of the vote.
-              This design puts the slate and the electors closer to the mark because that is the legal step the voter is actually taking.
-            </div>
-          </aside>
-        </section>
-      </div>
-
-      <p class="caption">
-        This is a design prototype, not an official ballot. It is meant to show how a presidential ballot could be more direct about what the voter is legally doing.
-      </p>
-    </div>
-  </section>
-
-  <section class="page-section manifesto" id="meaning">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">Why it matters</div>
-          <h2>A democratic system should not hide its own steps from the voter.</h2>
+          <div class="cta-row">
+            <a class="button" href="#ballot">See the Honest Ballot</a>
+            <a class="button secondary" href="#how">See the 4-step process</a>
+          </div>
         </div>
-        <p class="lede">
-          This project is not about making the ballot harder to read. It is about making the system easier to understand.
-        </p>
+        <aside class="hero-card">
+          <strong>The main idea</strong>
+          A voter should not have to guess what kind of act they are performing.
+          If the system uses electors, the ballot should say so clearly.
+        </aside>
       </div>
+    </section>
 
-      <div class="manifesto-block">
-        <p>
-          A ballot should not make voters feel they are doing one thing when the legal system is actually doing another.
-          If electors are part of the process, the ballot should say that plainly.
-        </p>
-        <p>
-          Candidate names still matter. They help people find the choice they want.
-          But they should not crowd out the fact that the legal choice on the ballot is a slate of electors.
-        </p>
-        <p>
-          Good civic design does not just help a person mark a box.
-          It helps them understand what their mark means.
+    <section class="page-section" id="why">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Why this exists</div>
+            <h2>The ballot is easy to use. It is not always honest about the system behind it.</h2>
+          </div>
+          <p class="lede">
+            Most voters are shown a ballot that looks more direct than the legal process really is.
+            The Honest Ballot keeps the ballot readable while also showing the missing middle step.
+          </p>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <h3>It puts electors in view</h3>
+            <p>Instead of hiding them in the background, it shows that the voter is choosing among slates of electors tied to each ticket.</p>
+          </article>
+          <article class="card">
+            <h3>It uses plain language</h3>
+            <p>No legal fog. No civics-class softening. Just a direct explanation of what the vote does and does not do.</p>
+          </article>
+          <article class="card">
+            <h3>It shows the rule up front</h3>
+            <p>The slate with the most votes statewide gets all of the state's electors. That rule should not be hidden.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="basics">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">EC basics</div>
+            <h2>The key facts a voter should not have to hunt down.</h2>
+          </div>
+          <p class="lede">
+            Before a voter can judge the system, they need a few basic facts in plain language: how many electors there are, how a state gets them, and how many it takes to win.
+          </p>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <h3>There are 538 electors total</h3>
+            <p>The country has 538 electoral votes in all. A candidate needs 270 to win the presidency.</p>
+          </article>
+          <article class="card">
+            <h3>Each state gets electors from Congress</h3>
+            <p>A state's elector count equals its number of House seats plus 2 more for its Senate seats.</p>
+          </article>
+          <article class="card">
+            <h3>Arizona currently has 11</h3>
+            <p>Arizona currently has 11 electors because it has 9 House seats and 2 Senate seats.</p>
+          </article>
+          <article class="card">
+            <h3>Washington, DC gets 3</h3>
+            <p>DC is not a state, but it gets 3 electors under the Constitution.</p>
+          </article>
+          <article class="card">
+            <h3>Most states use winner-take-all</h3>
+            <p>In most states, the statewide winner gets all of that state's electors.</p>
+          </article>
+          <article class="card">
+            <h3>Only two states split electors</h3>
+            <p>Maine and Nebraska can split electoral votes instead of giving all of them to one ticket.</p>
+          </article>
+        </div>
+
+        <div class="formula-band">
+          <article class="formula-box">
+            <h3>Why Arizona has 11 electors</h3>
+            <div class="formula-line">9 House seats <span>+</span> 2 Senate seats <span>=</span> 11 electors</div>
+            <div class="formula-note">That is the number of electoral votes Arizona gets in a presidential election.</div>
+          </article>
+          <article class="formula-box">
+            <h3>How many electors exist</h3>
+            <div class="formula-line">50 states <span>+</span> DC <span>=</span> 538 electors</div>
+            <div class="formula-note">The whole Electoral College adds up to 538 electoral votes.</div>
+          </article>
+          <article class="formula-box">
+            <h3>How many it takes to win</h3>
+            <div class="formula-line">538 total <span>÷</span> 2, rounded up <span>=</span> 270</div>
+            <div class="formula-note">A presidential ticket needs 270 electoral votes to win.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="compare">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Compare the two ballots</div>
+            <h2>One ballot feels direct. The other shows the missing step.</h2>
+          </div>
+          <p class="lede">
+            This side-by-side is useful because the difference is not just wording. It is visual emphasis. A standard ballot pushes the elector step into the background. The Honest Ballot puts it where the voter can actually see it.
+          </p>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-box">
+            <div class="compare-tag">Standard ballot</div>
+            <h3>What the voter usually sees</h3>
+            <ul class="feature-list">
+              <li><strong>Candidate names come first.</strong> The ballot feels like a direct choice of President.</li>
+              <li><strong>Electors are mostly invisible.</strong> The middle step is hidden or easy to miss.</li>
+              <li><strong>The rule is often unstated.</strong> The voter may not be told that the statewide winner gets all electors.</li>
+              <li><strong>The vote feels more direct than it is.</strong> The interface is simple, but it leaves out key facts.</li>
+            </ul>
+            <div class="mini-ballot" aria-hidden="true">
+              <div class="mini-ballot-title">Typical look</div>
+              <div class="mini-choice">
+                <strong>Grace Whitaker / Omar Flores</strong>
+                <span>Democratic Party</span>
+              </div>
+              <div class="mini-choice">
+                <strong>Noah Bennett / Claire Okafor</strong>
+                <span>Republican Party</span>
+              </div>
+              <div class="mini-choice">
+                <strong>Samuel Reed / Ivy Chen</strong>
+                <span>Independent</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="compare-box">
+            <div class="compare-tag">Honest Ballot</div>
+            <h3>What the voter should be able to see</h3>
+            <ul class="feature-list">
+              <li><strong>The slate comes first.</strong> The ballot makes clear that the voter is choosing electors.</li>
+              <li><strong>The electors are visible.</strong> The people who may actually cast the official votes are shown.</li>
+              <li><strong>The rule is stated clearly.</strong> The voter is told that the statewide winner gets all electors.</li>
+              <li><strong>The candidate names still appear.</strong> But they are shown as the ticket the slate is pledged to support, not as the whole legal story.</li>
+            </ul>
+            <div class="mini-ballot" aria-hidden="true">
+              <div class="mini-ballot-title">Honest look</div>
+              <div class="mini-choice">
+                <strong>Slate D — 11 Arizona electors</strong>
+                <span>Pledged to Grace Whitaker / Omar Flores</span>
+              </div>
+              <div class="mini-choice">
+                <strong>Slate C — 11 Arizona electors</strong>
+                <span>Pledged to Noah Bennett / Claire Okafor</span>
+              </div>
+              <div class="mini-choice">
+                <strong>Slate E — 11 Arizona electors</strong>
+                <span>Pledged to Samuel Reed / Ivy Chen</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="how">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">How it works</div>
+            <h2>This is the process your vote enters.</h2>
+          </div>
+          <p class="lede">
+            The steps are simple. What is unusual is that the normal ballot does not spell them out.
+          </p>
+        </div>
+        <div class="process">
+          <article class="step">
+            <div class="step-number">Step 1</div>
+            <h3>Each ticket has a slate of electors</h3>
+            <p>Before Election Day, each presidential ticket is tied to a group of electors in the state.</p>
+          </article>
+          <article class="step">
+            <div class="step-number">Step 2</div>
+            <h3>You pick one slate</h3>
+            <p>You see candidate names on the ballot, but the legal choice attached to them is a slate of electors.</p>
+          </article>
+          <article class="step">
+            <div class="step-number">Step 3</div>
+            <h3>The statewide winner gets all electors</h3>
+            <p>In a winner-take-all state, the slate with the most votes statewide gets the whole set of electors.</p>
+          </article>
+          <article class="step">
+            <div class="step-number">Step 4</div>
+            <h3>The electors cast the official votes</h3>
+            <p>Those electors later cast the state's formal electoral votes for President and Vice President.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="ballot">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Prototype</div>
+            <h2>An Honest Ballot for President and Vice President</h2>
+          </div>
+          <p class="lede">
+            This design keeps the ballot usable, but changes the visual order of importance.
+            The slate comes first. The electors come next. The candidate names are there, but they do not pretend to be the whole story.
+          </p>
+        </div>
+
+        <div class="ballot-shell">
+          <header class="ballot-header">
+            <div class="ballot-kicker">Official General Election Ballot — Demonstration Format</div>
+            <h3 class="ballot-title">Elector Selection Contest</h3>
+            <p class="ballot-subhead">
+              You are choosing which slate of electors this state will appoint.
+              The slate with the most votes statewide gets all of this state's electoral votes.
+            </p>
+            <section class="truth-panel" aria-label="What your vote does">
+              <strong>What your vote does</strong>
+              <ul class="truth-list">
+                <li><span><strong>This vote does not directly elect a President.</strong></span></li>
+                <li><span>This vote helps choose which <strong>slate of electors</strong> your state will appoint.</span></li>
+                <li><span>The electors on the winning slate later cast the state's official votes for President and Vice President.</span></li>
+              </ul>
+            </section>
+          </header>
+
+          <section class="ballot-grid">
+            <section class="ballot-left" aria-labelledby="choices-title">
+              <p class="minor-title" id="choices-title">Select one slate</p>
+
+              <div class="instruction-box">
+                <p><strong>How to vote:</strong> Mark <strong>one</strong> slate.</p>
+                <p>The slate with the most votes statewide wins all of this state's electors.</p>
+              </div>
+
+              <div class="candidate-list" role="radiogroup" aria-labelledby="choices-title">
+                <div class="candidate">
+                  <input type="radio" id="c1" name="president" />
+                  <label for="c1">
+                    <div class="slate-line">
+                      <div class="slate-name">Slate A</div>
+                      <div class="party">Civic Union Party</div>
+                    </div>
+                    <div class="elector-count">11 Arizona electors</div>
+                    <div class="pledge-line">Pledged to Elena Morales for President and David Kim for Vice President</div>
+                    <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                    <details>
+                      <summary>See the electors on this slate</summary>
+                      <ul class="elector-list">
+                        <li>Carlos Mendoza</li>
+                        <li>Patricia Washington</li>
+                        <li>Robert Kim</li>
+                        <li>Linda Hernandez</li>
+                        <li>Michael O'Brien</li>
+                        <li>Jennifer Yazzie</li>
+                        <li>Thomas Wright</li>
+                        <li>Maria Gonzalez</li>
+                        <li>David Chang</li>
+                        <li>Susan Miller</li>
+                        <li>Anthony Romero</li>
+                      </ul>
+                    </details>
+                    <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                  </label>
+                </div>
+
+                <div class="candidate">
+                  <input type="radio" id="c2" name="president" />
+                  <label for="c2">
+                    <div class="slate-line">
+                      <div class="slate-name">Slate B</div>
+                      <div class="party">National Reform Party</div>
+                    </div>
+                    <div class="elector-count">11 Arizona electors</div>
+                    <div class="pledge-line">Pledged to Marcus Hale for President and Priya Sethi for Vice President</div>
+                    <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                    <details>
+                      <summary>See the electors on this slate</summary>
+                      <ul class="elector-list">
+                        <li>Richard Thompson</li>
+                        <li>Barbara Fitzgerald</li>
+                        <li>Joseph Walsh</li>
+                        <li>Nancy Peterson</li>
+                        <li>William Hayes</li>
+                        <li>Dorothy Russell</li>
+                        <li>Charles Foster</li>
+                        <li>Margaret Cole</li>
+                        <li>Kenneth Wells</li>
+                        <li>Helen Reed</li>
+                        <li>Steven Porter</li>
+                      </ul>
+                    </details>
+                    <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                  </label>
+                </div>
+
+                <div class="candidate">
+                  <input type="radio" id="c3" name="president" />
+                  <label for="c3">
+                    <div class="slate-line">
+                      <div class="slate-name">Slate C</div>
+                      <div class="party">Republican Party</div>
+                    </div>
+                    <div class="elector-count">11 Arizona electors</div>
+                    <div class="pledge-line">Pledged to Noah Bennett for President and Claire Okafor for Vice President</div>
+                    <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                    <details>
+                      <summary>See the electors on this slate</summary>
+                      <ul class="elector-list">
+                        <li>Gregory Hanson</li>
+                        <li>Janet Klein</li>
+                        <li>Ryan Mitchell</li>
+                        <li>Emma Larsson</li>
+                        <li>Aaron Patel</li>
+                        <li>Sophia Nguyen</li>
+                        <li>Bradley Cooper</li>
+                        <li>Diana Schaefer</li>
+                        <li>Marcus Reyes</li>
+                        <li>Isabella Flores</li>
+                        <li>Nathan Brooks</li>
+                      </ul>
+                    </details>
+                    <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                  </label>
+                </div>
+
+                <div class="candidate">
+                  <input type="radio" id="c4" name="president" />
+                  <label for="c4">
+                    <div class="slate-line">
+                      <div class="slate-name">Slate D</div>
+                      <div class="party">Democratic Party</div>
+                    </div>
+                    <div class="elector-count">11 Arizona electors</div>
+                    <div class="pledge-line">Pledged to Grace Whitaker for President and Omar Flores for Vice President</div>
+                    <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                    <details>
+                      <summary>See the electors on this slate</summary>
+                      <ul class="elector-list">
+                        <li>Rosa Ortiz</li>
+                        <li>Daniel Greenberg</li>
+                        <li>Amara Johnson</li>
+                        <li>Jacob Silverman</li>
+                        <li>Yasmin Ahmed</li>
+                        <li>Christopher Lee</li>
+                        <li>Luna Martinez</li>
+                        <li>Benjamin Cohen</li>
+                        <li>Priya Sharma</li>
+                        <li>Jordan Williams</li>
+                        <li>Zoe Chen</li>
+                      </ul>
+                    </details>
+                    <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                  </label>
+                </div>
+
+                <div class="candidate">
+                  <input type="radio" id="c5" name="president" />
+                  <label for="c5">
+                    <div class="slate-line">
+                      <div class="slate-name">Slate E</div>
+                      <div class="party">Independent</div>
+                    </div>
+                    <div class="elector-count">11 Arizona electors</div>
+                    <div class="pledge-line">Pledged to Samuel Reed for President and Ivy Chen for Vice President</div>
+                    <div class="elector-summary">A vote here helps appoint this slate of 11 electors.</div>
+                    <details>
+                      <summary>See the electors on this slate</summary>
+                      <ul class="elector-list">
+                        <li>Harold Jackson</li>
+                        <li>Virginia Baker</li>
+                        <li>Edward Carter</li>
+                        <li>Ruth Davidson</li>
+                        <li>Frank Morrison</li>
+                        <li>Dorothy Anderson</li>
+                        <li>Paul Sanders</li>
+                        <li>Evelyn Phillips</li>
+                        <li>George Richardson</li>
+                        <li>Beatrice Harris</li>
+                        <li>Vincent Murphy</li>
+                      </ul>
+                    </details>
+                    <div class="selection-meaning">If this slate wins statewide, these 11 electors are the ones appointed.</div>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <aside class="ballot-right" aria-labelledby="explanation-title">
+              <p class="minor-title" id="explanation-title">Plain-language guide</p>
+
+              <div class="method-grid">
+                <div class="method-card">
+                  <div class="method-label">Ballot style</div>
+                  <div class="method-value">Pick one slate</div>
+                  <div class="method-help">You get one choice on this ballot.</div>
+                </div>
+                <div class="method-card">
+                  <div class="method-label">Counting rule</div>
+                  <div class="method-value">Plurality</div>
+                  <div class="method-help">Whoever gets more votes than any other slate wins.</div>
+                </div>
+                <div class="method-card">
+                  <div class="method-label">Winner rule</div>
+                  <div class="method-value">Most votes wins</div>
+                  <div class="method-help">A slate does not need over 50%. It only needs to finish first.</div>
+                </div>
+                <div class="method-card">
+                  <div class="method-label">Winner award</div>
+                  <div class="method-value">All state electors</div>
+                  <div class="method-help">The statewide winner gets all 11 Arizona electors.</div>
+                </div>
+              </div>
+
+              <div class="mechanics">
+                <h4>What happens after you vote</h4>
+                <ol>
+                  <li>You mark one slate.</li>
+                  <li>All votes in the state are counted.</li>
+                  <li>The slate with the most votes wins all 11 Arizona elector spots.</li>
+                  <li>Those 11 electors later cast Arizona's official votes for President and Vice President.</li>
+                </ol>
+              </div>
+
+              <div class="plurality">
+                <strong>Important rule:</strong><br>
+                This ballot uses <strong>plurality</strong> voting. That means a slate can win all 11 electors without winning more than half of the vote. It only needs more votes than any other slate.
+              </div>
+
+              <div class="plain-box">
+                <h4>What votes for losing slates do not do</h4>
+                <ol>
+                  <li>They do not help appoint part of Arizona's elector slate.</li>
+                  <li>They do not add electors to the national total for that ticket.</li>
+                  <li>They are counted and reported, but they do not change who Arizona appoints unless that slate wins statewide.</li>
+                </ol>
+              </div>
+
+              <div class="notice">
+                <strong>Why this ballot looks different</strong><br>
+                Most ballots make the candidate feel like the direct object of the vote.
+                This design puts the slate and the electors closer to the mark because that is the legal step the voter is actually taking.
+              </div>
+            </aside>
+          </section>
+        </div>
+
+        <p class="caption">
+          This is a design prototype, not an official ballot. It is meant to show how a presidential ballot could be more direct about what the voter is legally doing.
         </p>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="page-section manifesto" id="meaning">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Why it matters</div>
+            <h2>A democratic system should not hide its own steps from the voter.</h2>
+          </div>
+          <p class="lede">
+            This project is not about making the ballot harder to read. It is about making the system easier to understand.
+          </p>
+        </div>
+
+        <div class="manifesto-block">
+          <p>
+            A ballot should not make voters feel they are doing one thing when the legal system is actually doing another.
+            If electors are part of the process, the ballot should say that plainly.
+          </p>
+          <p>
+            Candidate names still matter. They help people find the choice they want.
+            But they should not crowd out the fact that the legal choice on the ballot is a slate of electors.
+          </p>
+          <p>
+            Good civic design does not just help a person mark a box.
+            It helps them understand what their mark means.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <div class="container">
