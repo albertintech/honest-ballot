@@ -168,6 +168,20 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
+      text-decoration: none;
+      transition: color 180ms ease;
+    }
+
+    .brand:hover,
+    .brand:focus-visible {
+      color: var(--accent);
+      outline: none;
+    }
+
+    .brand:focus-visible {
+      outline: 2px solid var(--accent-2);
+      outline-offset: 4px;
+      border-radius: 2px;
     }
 
     .nav {
@@ -926,7 +940,7 @@
 
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">The Honest Ballot</div>
+      <a href="#top" class="brand" aria-label="The Honest Ballot — return to top">The Honest Ballot</a>
       <div class="topbar-controls">
         <nav class="nav" aria-label="Section navigation">
           <a href="#why">Why this exists</a>
