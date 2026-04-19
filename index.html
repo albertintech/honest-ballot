@@ -1,9 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Honest Ballot</title>
+  <script>
+    (() => {
+      const storageKey = "honestBallotTheme";
+      const savedTheme = localStorage.getItem(storageKey);
+      const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", savedTheme || preferredTheme);
+    })();
+  </script>
   <style>
     :root {
       --bg: #f3efe6;
@@ -21,6 +30,21 @@
       --max: 1180px;
     }
 
+    :root[data-theme="dark"] {
+      --bg: #11151c;
+      --paper: #181d26;
+      --ink: #f3eee3;
+      --muted: #bcc4d1;
+      --rule: #3a4251;
+      --accent: #ff9d8f;
+      --accent-2: #8db7ff;
+      --soft: #202734;
+      --warn: #2b2419;
+      --box: #1c212b;
+      --hero: #141a23;
+      --shadow: 0 14px 40px rgba(0,0,0,0.34);
+    }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
@@ -33,6 +57,34 @@
     }
 
     a { color: inherit; }
+
+    body,
+    .topbar,
+    .hero,
+    .hero-card,
+    .card,
+    .formula-box,
+    .method-card,
+    .compare-box,
+    .compare-tag,
+    .mini-ballot,
+    .mini-choice,
+    .step,
+    .ballot-shell,
+    .ballot-header,
+    .truth-panel,
+    .candidate,
+    .mechanics,
+    .notice,
+    .plurality,
+    .plain-box,
+    .manifesto,
+    .manifesto-block,
+    .theme-toggle,
+    .button,
+    .party {
+      transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
 
     .topbar {
       position: sticky;
@@ -57,6 +109,14 @@
       padding: 14px 0;
     }
 
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .brand {
       font-size: 0.95rem;
       letter-spacing: 0.14em;
@@ -79,6 +139,27 @@
     .nav a:hover,
     .nav a:focus-visible {
       color: var(--accent);
+    }
+
+    .theme-toggle {
+      appearance: none;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font: inherit;
+      font-size: 0.92rem;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
+      border-color: var(--accent-2);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(141,183,255,0.18);
     }
 
     .hero {
@@ -464,6 +545,10 @@
       margin-top: 2px;
     }
 
+    .truth-list li > span {
+      display: block;
+    }
+
     .ballot-grid {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -538,10 +623,10 @@
 
     .slate-line {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 10px;
     }
 
     .slate-name {
@@ -551,12 +636,14 @@
 
     .party {
       display: inline-block;
-      font-size: 0.86rem;
-      padding: 2px 8px;
+      width: fit-content;
+      font-size: 0.8rem;
+      padding: 4px 10px;
       border: 1px solid var(--rule);
       border-radius: 999px;
       background: #fff;
       color: var(--muted);
+      line-height: 1;
     }
 
     .elector-count {
@@ -672,6 +759,83 @@
       font-size: 0.95rem;
     }
 
+    :root[data-theme="dark"] body {
+      background: linear-gradient(180deg, #0d1117 0%, var(--bg) 100%);
+    }
+
+    :root[data-theme="dark"] .topbar {
+      background: rgba(20, 26, 35, 0.92);
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+
+    :root[data-theme="dark"] .hero {
+      background:
+        radial-gradient(circle at top right, rgba(255,157,143,0.08), transparent 30%),
+        radial-gradient(circle at top left, rgba(141,183,255,0.10), transparent 30%),
+        var(--hero);
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+
+    :root[data-theme="dark"] .hero-card,
+    :root[data-theme="dark"] .formula-box,
+    :root[data-theme="dark"] .method-card,
+    :root[data-theme="dark"] .compare-tag,
+    :root[data-theme="dark"] .mini-ballot,
+    :root[data-theme="dark"] .step,
+    :root[data-theme="dark"] .mechanics,
+    :root[data-theme="dark"] .plain-box {
+      background: #141922;
+    }
+
+    :root[data-theme="dark"] .party {
+      background: #eef1f6;
+      color: #7f8793;
+      border-color: #d5dbe5;
+    }
+
+    :root[data-theme="dark"] .hero-copy,
+    :root[data-theme="dark"] .section-head p,
+    :root[data-theme="dark"] .lede,
+    :root[data-theme="dark"] .manifesto-block p {
+      color: #e5e0d7;
+    }
+
+    :root[data-theme="dark"] .ballot-header {
+      background: linear-gradient(180deg, #1b2230, #171d27);
+    }
+
+    :root[data-theme="dark"] .notice {
+      background: #172131;
+    }
+
+    :root[data-theme="dark"] .plurality {
+      background: #1e1b17;
+    }
+
+    :root[data-theme="dark"] .manifesto {
+      background: linear-gradient(180deg, #161b23, #11151c);
+      border-top-color: rgba(255,255,255,0.08);
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+
+    :root[data-theme="dark"] .manifesto-block,
+    :root[data-theme="dark"] .hero-card {
+      background: rgba(24,29,38,0.88);
+      border-color: rgba(255,255,255,0.08);
+    }
+
+    :root[data-theme="dark"] .button {
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+      color: #0f1520;
+    }
+
+    :root[data-theme="dark"] .button.secondary {
+      background: transparent;
+      border-color: var(--rule);
+      color: var(--ink);
+    }
+
     @media (max-width: 980px) {
       .hero-grid,
       .section-head,
@@ -695,6 +859,8 @@
 
     @media (max-width: 640px) {
       .topbar-inner { align-items: start; flex-direction: column; }
+      .topbar-controls { width: 100%; justify-content: space-between; }
+      .theme-toggle { padding: 9px 12px; }
       .card-grid,
       .process,
       .compare-grid { grid-template-columns: 1fr; }
@@ -704,7 +870,7 @@
       .ballot-header,
       .ballot-left,
       .ballot-right { padding-left: 18px; padding-right: 18px; }
-      .slate-line { align-items: start; flex-direction: column; gap: 6px; }
+      .slate-line { align-items: flex-start; gap: 6px; }
     }
   </style>
 </head>
@@ -712,14 +878,17 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">The Honest Ballot</div>
-      <nav class="nav" aria-label="Section navigation">
-        <a href="#why">Why this exists</a>
-        <a href="#basics">EC basics</a>
-        <a href="#compare">Compare</a>
-        <a href="#how">How it works</a>
-        <a href="#ballot">See the ballot</a>
-        <a href="#meaning">Why it matters</a>
-      </nav>
+      <div class="topbar-controls">
+        <nav class="nav" aria-label="Section navigation">
+          <a href="#why">Why this exists</a>
+          <a href="#basics">EC basics</a>
+          <a href="#compare">Compare</a>
+          <a href="#how">How it works</a>
+          <a href="#ballot">See the ballot</a>
+          <a href="#meaning">Why it matters</a>
+        </nav>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false">Dark theme</button>
+      </div>
     </div>
   </header>
 
@@ -1042,7 +1211,7 @@
                 <label for="c3">
                   <div class="slate-line">
                     <div class="slate-name">Slate C</div>
-                    <div class="party">Republic Party</div>
+                    <div class="party">Republican Party</div>
                   </div>
                   <div class="elector-count">11 Arizona electors</div>
                   <div class="pledge-line">Pledged to Noah Bennett for President and Claire Okafor for Vice President</div>
@@ -1228,5 +1397,30 @@
       The Honest Ballot — a prototype for making hidden election mechanics visible.
     </div>
   </footer>
+
+  <script>
+    (() => {
+      const storageKey = "honestBallotTheme";
+      const root = document.documentElement;
+      const toggle = document.getElementById("theme-toggle");
+
+      if (!toggle) return;
+
+      const applyTheme = (theme) => {
+        root.setAttribute("data-theme", theme);
+        const isDark = theme === "dark";
+        toggle.textContent = isDark ? "Light theme" : "Dark theme";
+        toggle.setAttribute("aria-pressed", String(isDark));
+      };
+
+      applyTheme(root.getAttribute("data-theme") || "light");
+
+      toggle.addEventListener("click", () => {
+        const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        localStorage.setItem(storageKey, nextTheme);
+        applyTheme(nextTheme);
+      });
+    })();
+  </script>
 </body>
 </html>
